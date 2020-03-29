@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
-  def jsonapi_object
-    nil
-  end
 
   private
 

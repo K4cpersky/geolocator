@@ -6,7 +6,7 @@ class Api::InternetProtocolsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_error
 
   def show
-    render jsonapi: @internet_protocol
+    render jsonapi: @internet_protocol, include: [:location]
   end
 
   private

@@ -1,9 +1,11 @@
-class SerializableInternetProtocol < JSONAPI::Serializable::Resource
-  type :internet_protocols
+module InternetProtocolDecorator
+  class SerializableInternetProtocol < JSONAPI::Serializable::Resource
+    type :internet_protocols
 
-  attributes :name
+    attributes :name
 
-  has_one :location do
-    linkage( always: true )
+    has_one :location do
+      linkage( always: true )
+    end
   end
 end

@@ -50,6 +50,7 @@ group :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'shoulda-matchers'
+  gem 'jsonapi-rspec'
   gem 'vcr'
 end
 
