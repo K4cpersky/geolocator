@@ -6,7 +6,7 @@ class Location < ApplicationRecord
   validates :region, presence: true
   validates :city, presence: true
   validates :zip, presence: true
-  validates :latitue, presence: true
+  validates :latitude, presence: true
   validates :longitude, presence: true
 
   belongs_to :internet_protocol

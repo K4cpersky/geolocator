@@ -11,7 +11,7 @@ RSpec.describe Location, type: :model do
     it { is_expected.to validate_presence_of(:region) }
     it { is_expected.to validate_presence_of(:city) }
     it { is_expected.to validate_presence_of(:zip) }
-    it { is_expected.to validate_presence_of(:latitue) }
+    it { is_expected.to validate_presence_of(:latitude) }
     it { is_expected.to validate_presence_of(:longitude) }
   end
 

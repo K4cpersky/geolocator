@@ -32,8 +32,8 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
             .and have_attribute(:region).with_value(location.region)
             .and have_attribute(:city).with_value(location.city)
             .and have_attribute(:zip).with_value(location.zip)
-            .and have_attribute(:longitude).with_value(location.longitude.round(13))
-            .and have_attribute(:latitue).with_value(location.latitue.round(13))
+            .and have_attribute(:longitude).with_value(location.longitude)
+            .and have_attribute(:latitude).with_value(location.latitude)
           )
       }
       it { expect(response.status).to eq(200) }

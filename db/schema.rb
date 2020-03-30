@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_26_205523) do
+ActiveRecord::Schema.define(version: 2020_03_30_161034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,14 +26,14 @@ ActiveRecord::Schema.define(version: 2020_03_26_205523) do
     t.string "region", null: false
     t.string "city", null: false
     t.string "zip", null: false
-    t.float "latitue", null: false
-    t.float "longitude", null: false
+    t.decimal "latitude", precision: 10, null: false
+    t.decimal "longitude", precision: 10, null: false
     t.bigint "internet_protocol_id"
     t.index ["city"], name: "index_locations_on_city"
     t.index ["continent"], name: "index_locations_on_continent"
     t.index ["country"], name: "index_locations_on_country"
     t.index ["internet_protocol_id"], name: "index_locations_on_internet_protocol_id", unique: true
-    t.index ["latitue"], name: "index_locations_on_latitue"
+    t.index ["latitude"], name: "index_locations_on_latitude"
     t.index ["longitude"], name: "index_locations_on_longitude"
     t.index ["region"], name: "index_locations_on_region"
     t.index ["zip"], name: "index_locations_on_zip"
