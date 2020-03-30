@@ -60,8 +60,11 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
     context 'when internet_protocol is found' do
       let(:internet_protocol_id) { location.internet_protocol.id }
 
-      it 'destroys the object' do
+      it 'destroys internet protocol' do
         expect { internet_protocol_delete }.to change { InternetProtocol.count }.by(-1)
+      end
+      it 'destroys internet protocol location' do
+        expect { internet_protocol_delete }.to change { Location.count }.by(-1)
       end
       it { expect(response.body).to eq '' }
       it { expect(response.status).to eq(200) }
