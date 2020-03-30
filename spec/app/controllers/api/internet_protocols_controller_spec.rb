@@ -21,20 +21,19 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
       }
       it {
         expect(response_data['data']).to have_relationship(:location)
-          .with_data({ 'id' => location.id.to_s, 'type' => 'locations' })
+          .with_data('id' => location.id.to_s, 'type' => 'locations')
       }
       it {
         expect(response_data['included'])
           .to include(have_type('locations')
-            .and have_id(location.id.to_s)
-            .and have_attribute(:continent).with_value(location.continent)
-            .and have_attribute(:country).with_value(location.country)
-            .and have_attribute(:region).with_value(location.region)
-            .and have_attribute(:city).with_value(location.city)
-            .and have_attribute(:zip).with_value(location.zip)
-            .and have_attribute(:longitude).with_value(location.longitude)
-            .and have_attribute(:latitude).with_value(location.latitude)
-          )
+            .and(have_id(location.id.to_s)
+            .and(have_attribute(:continent).with_value(location.continent)
+            .and(have_attribute(:country).with_value(location.country)
+            .and(have_attribute(:region).with_value(location.region)
+            .and(have_attribute(:city).with_value(location.city)
+            .and(have_attribute(:zip).with_value(location.zip)
+            .and(have_attribute(:longitude).with_value(location.longitude)
+            .and(have_attribute(:latitude).with_value(location.latitude))))))))))
       }
       it { expect(response.status).to eq(200) }
     end
@@ -44,7 +43,7 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
       let(:response_data) { JSON.parse(response.body) }
 
       it {
-        expect(response_data["errors"][0]["detail"])
+        expect(response_data['errors'][0]['detail'])
           .to eq("Couldn't find InternetProtocol with 'id'=#{internet_protocol_id}")
       }
       it { expect(response.status).to eq(404) }

@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :location do
-    continent { "Europe" }
+    continent { 'Europe' }
     country { Faker::Address.country }
     region { Faker::Address.street_name }
     city { Faker::Address.city }
