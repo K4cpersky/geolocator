@@ -11,6 +11,6 @@ RSpec.describe InternetProtocol, type: :model do
   end
 
   describe 'relations' do
-    it { is_expected.to have_one(:location) }
+    it { is_expected.to have_one(:location).dependent(:destroy) }
   end
 end

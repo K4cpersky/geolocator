@@ -40,5 +40,5 @@ ActiveRecord::Schema.define(version: 20_200_330_161_034) do
     t.index ['zip'], name: 'index_locations_on_zip'
   end
 
-  add_foreign_key 'locations', 'internet_protocols'
+  add_foreign_key 'locations', 'internet_protocols', on_delete: :cascade
 end

@@ -10,7 +10,7 @@ class CreateLocations < ActiveRecord::Migration[6.0]
       t.string :zip, null: false
       t.float :latitue, null: false
       t.float :longitude, null: false
-      t.belongs_to :internet_protocol, index: { unique: true }, foreign_key: true
+      t.belongs_to :internet_protocol, index: { unique: true }, foreign_key: { on_delete: :cascade }
     end
   end
 end

@@ -3,5 +3,5 @@
 class InternetProtocol < ApplicationRecord
   validates :name, presence: true, uniqueness: true, case_sensitive: false
 
-  has_one :location
+  has_one :location, dependent: :destroy
 end

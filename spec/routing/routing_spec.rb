@@ -11,4 +11,12 @@ RSpec.describe 'Routing', type: :routing do
       id: 1
     )
   }
+  it {
+    is_expected.to route(:delete, '/api/internet_protocols/1').to(
+      format: :json,
+      controller: 'api/internet_protocols',
+      action: :destroy,
+      id: 1
+    )
+  }
 end

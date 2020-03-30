@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::InternetProtocolsController < ApplicationController
-  before_action :find_internet_protocol, only: %i[show delete]
+  before_action :find_internet_protocol, only: %i[show destroy]
 
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_error
 
@@ -9,7 +9,8 @@ class Api::InternetProtocolsController < ApplicationController
     render jsonapi: @internet_protocol, include: [:location]
   end
 
-  def delete
+  def destroy
+    @internet_protocol.destroy
     head :ok
   end
 

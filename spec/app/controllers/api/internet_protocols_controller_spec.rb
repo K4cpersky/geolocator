@@ -50,6 +50,39 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
     end
   end
 
+  describe 'GET #destroy' do
+    subject(:internet_protocol_delete) do
+      delete :destroy, params: { id: internet_protocol_id }
+    end
+
+    let!(:location) { create(:location) }
+
+    context 'when internet_protocol is found' do
+      let(:internet_protocol_id) { location.internet_protocol.id }
+
+      it 'destroys the object' do
+        expect { internet_protocol_delete }.to change { InternetProtocol.count }.by(-1)
+      end
+      it { expect(response.body).to eq '' }
+      it { expect(response.status).to eq(200) }
+    end
+
+    context 'when internet_protocol is not found' do
+      let(:internet_protocol_id) { 123_456 }
+      let(:response_data) { JSON.parse(response.body) }
+
+      it {
+        internet_protocol_delete
+        expect(response_data['errors'][0]['detail'])
+          .to eq("Couldn't find InternetProtocol with 'id'=#{internet_protocol_id}")
+      }
+      it {
+        internet_protocol_delete
+        expect(response.status).to eq(404)
+      }
+    end
+  end
+
   describe 'callbacks' do
     it { should use_before_action(:find_internet_protocol) }
   end
