@@ -9,6 +9,12 @@ class Api::InternetProtocolsController < ApplicationController
     render jsonapi: @internet_protocol, include: [:location]
   end
 
+  def create
+    @internet_protocol = InternetProtocol::Process.call(permitted_params)
+
+    # render jsonapi: @internet_protocol, include: [:location]
+  end
+
   def destroy
     @internet_protocol.destroy
     head :ok
@@ -18,5 +24,9 @@ class Api::InternetProtocolsController < ApplicationController
 
   def find_internet_protocol
     @internet_protocol = InternetProtocol.find(params[:id])
+  end
+
+  def permitted_params
+    params.require(:data).require(:attributes).permit(:name)
   end
 end

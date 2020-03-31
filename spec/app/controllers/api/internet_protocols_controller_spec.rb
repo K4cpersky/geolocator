@@ -86,6 +86,55 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
     end
   end
 
+  describe 'POST #create' do
+    # before do
+    #   post :create, params: params, as: :json
+    # end
+
+    subject(:post_create) do
+      post :create, params: params, as: :json
+    end
+
+    # let(:location) { create(:location) }
+    let(:params) do
+        {
+          data: {
+            attributes: {
+              name: "66.249.69.123"
+            }
+          }
+        }
+    end
+    let(:response_data) { JSON.parse(response.body) }
+
+    context 'when internet protocol is created' do
+      let(:internet_protocol) { location.internet_protocol.name }
+
+      it 'runs payment process' do
+        ActionController::Parameters.permit_all_parameters = true
+        permitted_params = ActionController::Parameters.new(name: "66.249.69.123")
+        expect(InternetProtocol::Process)
+          .to receive(:call).with(permitted_params)
+                            .and_call_original
+
+        post_create
+      end
+
+      # it 'has 200 ok status' do
+      #   expect(response.status).to eq(200)
+      # end
+
+      # it 'contains valid response data' do
+      #   expect(response_data['event_id']).to eq(payment_params[:event_id])
+      #   expect(response.content_type).to eq 'application/json; charset=utf-8'
+      # end
+
+      # it 'increases amount of saved internet protocols by 1' do
+      #   expect { post_create }.to change { InternetProtocol.count }.by(1)
+      # end
+    end
+  end
+
   describe 'callbacks' do
     it { should use_before_action(:find_internet_protocol) }
   end
