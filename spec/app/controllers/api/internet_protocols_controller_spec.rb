@@ -92,20 +92,20 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
     end
 
     let(:params) do
-        {
-          data: {
-            attributes: {
-              name: internet_protocol_name
-            }
+      {
+        data: {
+          attributes: {
+            name: internet_protocol_name
           }
         }
+      }
     end
     let(:response_data) do
       JSON.parse(response.body)
     end
 
     context 'when internet protocol is created' do
-      let(:internet_protocol_name) { "134.201.250.155" }
+      let(:internet_protocol_name) { '134.201.250.155' }
 
       it 'runs internet protocol process' do
         ActionController::Parameters.permit_all_parameters = true
@@ -117,17 +117,17 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
         post_create
       end
 
-      let(:internet_protocol_name) { "188.121.15.4" }
+      let(:internet_protocol_name) { '188.121.15.4' }
       let(:location) do
         {
-          city: "Wrocław",
-          continent: "Europe",
-          country: "Poland",
-          ip: "188.121.15.4",
+          city: 'Wrocław',
+          continent: 'Europe',
+          country: 'Poland',
+          ip: '188.121.15.4',
           latitude: 51.08361053466797,
           longitude: 17.001310348510742,
-          region: "Lower Silesia",
-          zip: "53-142"
+          region: 'Lower Silesia',
+          zip: '53-142'
         }
       end
 
@@ -140,7 +140,7 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
         expect(response_data['data'])
           .to have_attribute(:name).with_value(internet_protocol_name)
         expect(response_data['data']).to have_relationship(:location)
-            .with_data('id' => Location.first.id.to_s, 'type' => 'locations')
+          .with_data('id' => Location.first.id.to_s, 'type' => 'locations')
         expect(response_data['included'])
           .to include(have_type('locations')
             .and(have_id(Location.first.id.to_s)
@@ -156,13 +156,13 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
 
     context 'when internet protocol is not created' do
       context 'when internet protocol is invalid' do
-        let(:internet_protocol_name) { "123-456-123" }
+        let(:internet_protocol_name) { '123-456-123' }
 
         it {
           post :create, params: params, as: :json
 
           expect(response_data['errors'][0]['detail'])
-            .to eq("Validation failed: Name is invalid")
+            .to eq('Validation failed: Name is invalid')
         }
         it {
           post :create, params: params, as: :json
@@ -172,16 +172,16 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
       end
 
       context 'when internet protocol is already created' do
-        let(:internet_protocol_name) { "134.201.250.155" }
+        let(:internet_protocol_name) { '134.201.250.155' }
         let!(:internet_protocol) do
-          create(:internet_protocol, name: "134.201.250.155")
+          create(:internet_protocol, name: '134.201.250.155')
         end
 
         it {
           post :create, params: params, as: :json
 
           expect(response_data['errors'][0]['detail'])
-            .to eq("Validation failed: Name has already been taken")
+            .to eq('Validation failed: Name has already been taken')
         }
         it {
           post :create, params: params, as: :json

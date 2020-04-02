@@ -7,20 +7,20 @@ RSpec.describe InternetProtocol::Process do
   describe '.call' do
     subject(:call) { described_class.call(params) }
 
-    let(:name) { "188.121.15.4" }
+    let(:name) { '188.121.15.4' }
     let(:params) do
       { name: name }
     end
     let(:location_attributes) do
       {
-        "city"=>"Wrocław",
-        "continent_name"=>"Europe",
-        "country_name"=>"Poland",
-        "ip"=>"188.121.15.4",
-        "latitude"=>51.08361053466797,
-        "longitude"=>17.001310348510742,
-        "region_name"=>"Lower Silesia",
-        "zip"=>"53-142"
+        'city' => 'Wrocław',
+        'continent_name' => 'Europe',
+        'country_name' => 'Poland',
+        'ip' => '188.121.15.4',
+        'latitude' => 51.08361053466797,
+        'longitude' => 17.001310348510742,
+        'region_name' => 'Lower Silesia',
+        'zip' => '53-142'
       }
     end
 

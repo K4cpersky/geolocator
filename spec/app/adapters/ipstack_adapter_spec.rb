@@ -7,9 +7,8 @@ RSpec.describe IpstackAdapter do
   describe '.call' do
     subject(:call) { described_class.call(internet_protocol) }
 
-    let(:internet_protocol) { "188.121.15.4" }
+    let(:internet_protocol) { '188.121.15.4' }
 
     it { subject }
-
   end
 end

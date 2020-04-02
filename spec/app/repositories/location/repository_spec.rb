@@ -11,24 +11,24 @@ RSpec.describe Location::Repository do
 
   let(:location) do
     {
-      "continent_name"=>"Europe",
-      "country_name"=>country,
-      "region_name"=>"Lower Silesia",
-      "city"=>Faker::Address.city,
-      "zip"=>Faker::Address.zip_code,
-      "latitude"=>Faker::Address.latitude,
-      "longitude"=>Faker::Address.longitude
+      'continent_name' => 'Europe',
+      'country_name' => country,
+      'region_name' => 'Lower Silesia',
+      'city' => Faker::Address.city,
+      'zip' => Faker::Address.zip_code,
+      'latitude' => Faker::Address.latitude,
+      'longitude' => Faker::Address.longitude
     }
   end
   let(:attributes) do
     {
-      continent: location["continent_name"],
-      country: location["country_name"],
-      region: location["region_name"],
-      city: location["city"],
-      zip: location["zip"],
-      latitude: location["latitude"],
-      longitude: location["longitude"],
+      continent: location['continent_name'],
+      country: location['country_name'],
+      region: location['region_name'],
+      city: location['city'],
+      zip: location['zip'],
+      latitude: location['latitude'],
+      longitude: location['longitude'],
       internet_protocol_id: internet_protocol_id
     }
   end

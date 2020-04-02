@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe InternetProtocol::Repository do
   subject(:create_internet_protocol) do
-    described_class.create( attribute )
+    described_class.create(attribute)
   end
 
   context 'when attribute is valid' do
@@ -32,7 +32,7 @@ RSpec.describe InternetProtocol::Repository do
     end
 
     context 'when ip is wrong' do
-      let(:attribute) { { name: "33-423-52-532" } }
+      let(:attribute) { { name: '33-423-52-532' } }
 
       it { expect { subject }.to raise_error(ActiveRecord::RecordInvalid) }
     end
