@@ -12,7 +12,7 @@ class Api::InternetProtocolsController < ApplicationController
   def create
     @internet_protocol = InternetProtocol::Process.call(permitted_params)
 
-    # render jsonapi: @internet_protocol, include: [:location]
+    render jsonapi: @internet_protocol, include: [:location]
   end
 
   def destroy

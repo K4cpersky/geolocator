@@ -7,12 +7,24 @@ RSpec.describe InternetProtocol::Process do
   describe '.call' do
     subject(:call) { described_class.call(params) }
 
+    let(:name) { "188.121.15.4" }
     let(:params) do
-      { name: internet_protocol }
+      { name: name }
     end
-    let(:internet_protocol) { "66.249.69.123" }
+    let(:location_attributes) do
+      {
+        "city"=>"Wrocław",
+        "continent_name"=>"Europe",
+        "country_name"=>"Poland",
+        "ip"=>"188.121.15.4",
+        "latitude"=>51.08361053466797,
+        "longitude"=>17.001310348510742,
+        "region_name"=>"Lower Silesia",
+        "zip"=>"53-142"
+      }
+    end
 
-    it 'calls payment create form' do
+    it 'calls internet protocol repository' do
       expect(InternetProtocol::Repository)
         .to receive(:create)
         .with(params)
@@ -21,33 +33,27 @@ RSpec.describe InternetProtocol::Process do
       call
     end
 
-    # it 'submits payment form' do
-    #   expect_any_instance_of(Payment::CreateForm)
-    #     .to receive(:submit)
-    #     .and_call_original
-    #
-    #   call
-    # end
+    it 'calls ipstack adapter' do
+      expect(IpstackAdapter)
+        .to receive(:call)
+        .with(name)
+        .and_call_original
 
-    # it 'create tickets' do
-    #   # TODO: How should I know what will be id of payment? It's 3 but should be assigned to sth.
-    #   expect(Ticket::Generate)
-    #     .to receive(:call)
-    #     .with(tickets_ordered_amount: tickets_ordered_amount, payment_id: 3)
-    #     .and_call_original
-    #
-    #   call
-    # end
+      call
+    end
 
-    # it 'updates event amount of available tickets' do
-    #   # TODO: How should I know what will be id of payment? It's 4 but should be assigned to sth.
-    #   expect(Event::UpdateAvailableTickets)
-    #     .to receive(:call)
-    #     .with(4)
-    #     .and_call_original
-    #
-    #   call
-    # end
+    let(:ip) { double :internet_protocol }
+
+    it 'calls location repository' do
+      binding.pry
+
+      expect(Location::Repository)
+        .to receive(:create)
+        .with(location_attributes, internet_protocol.id)
+        .and_call_original
+
+      call
+    end
 
     # it 'returns payment data' do
     #   call

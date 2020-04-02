@@ -87,51 +87,61 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
   end
 
   describe 'POST #create' do
-    # before do
-    #   post :create, params: params, as: :json
-    # end
-
     subject(:post_create) do
       post :create, params: params, as: :json
     end
 
-    # let(:location) { create(:location) }
     let(:params) do
         {
           data: {
             attributes: {
-              name: "66.249.69.123"
+              name: Faker::Internet.ip_v4_address
             }
           }
         }
     end
     let(:response_data) { JSON.parse(response.body) }
+    let(:internet_protocol_id) { location.internet_protocol_id }
 
     context 'when internet protocol is created' do
-      let(:internet_protocol) { location.internet_protocol.name }
+      before do
+        post :create, params: params, as: :json
+      end
 
       it 'runs payment process' do
         ActionController::Parameters.permit_all_parameters = true
-        permitted_params = ActionController::Parameters.new(name: "66.249.69.123")
+        permitted_params = ActionController::Parameters.new(name: params[:data][:attributes][:name])
         expect(InternetProtocol::Process)
           .to receive(:call).with(permitted_params)
                             .and_call_original
 
         post_create
       end
-
-      # it 'has 200 ok status' do
-      #   expect(response.status).to eq(200)
-      # end
-
-      # it 'contains valid response data' do
-      #   expect(response_data['event_id']).to eq(payment_params[:event_id])
-      #   expect(response.content_type).to eq 'application/json; charset=utf-8'
-      # end
-
-      # it 'increases amount of saved internet protocols by 1' do
-      #   expect { post_create }.to change { InternetProtocol.count }.by(1)
-      # end
+      # Tak samo jak w show odtąd
+      it { expect(response.status).to eq(200) }
+      it { expect(response_data['data']).to have_id(internet_protocol_id.to_s) }
+      it { expect(response_data['data']).to have_type('internet_protocols') }
+      it {
+        expect(response_data['data']).to have_attribute(:name)
+          .with_value(location.internet_protocol.name)
+      }
+      it {
+        expect(response_data['data']).to have_relationship(:location)
+          .with_data('id' => location.id.to_s, 'type' => 'locations')
+      }
+      it {
+        expect(response_data['included'])
+          .to include(have_type('locations')
+            .and(have_id(location.id.to_s)
+            .and(have_attribute(:continent).with_value(location.continent)
+            .and(have_attribute(:country).with_value(location.country)
+            .and(have_attribute(:region).with_value(location.region)
+            .and(have_attribute(:city).with_value(location.city)
+            .and(have_attribute(:zip).with_value(location.zip)
+            .and(have_attribute(:longitude).with_value(location.longitude)
+            .and(have_attribute(:latitude).with_value(location.latitude))))))))))
+      }
+      # dotąd
     end
   end
 
