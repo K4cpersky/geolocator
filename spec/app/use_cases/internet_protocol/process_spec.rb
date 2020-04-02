@@ -42,27 +42,13 @@ RSpec.describe InternetProtocol::Process do
       call
     end
 
-    let(:ip) { double :internet_protocol }
-
     it 'calls location repository' do
-      binding.pry
-
       expect(Location::Repository)
         .to receive(:create)
-        .with(location_attributes, internet_protocol.id)
+        .with(location_attributes, InternetProtocol.first.id)
         .and_call_original
 
       call
     end
-
-    # it 'returns payment data' do
-    #   call
-    #   expect(call.new_payment.paid_amount).to eq payment_params[:paid_amount]
-    #   expect(call.new_payment.user_id).to eq user.id
-    #   expect(call.new_payment.event_id).to eq event.id
-    #   expect(call.new_payment.currency).to eq payment_params[:currency]
-    #   expect(call.new_payment.tickets_ordered_amount)
-    #     .to eq payment_params[:tickets_ordered_amount]
-    # end
   end
 end

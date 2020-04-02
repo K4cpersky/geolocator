@@ -7,7 +7,7 @@ class AddIndexesToLocations < ActiveRecord::Migration[6.0]
     add_index :locations, :region
     add_index :locations, :city
     add_index :locations, :zip
-    add_index :locations, :latitue
+    add_index :locations, :latitude
     add_index :locations, :longitude
   end
 end

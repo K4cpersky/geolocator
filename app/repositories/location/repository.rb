@@ -12,7 +12,7 @@ class Location::Repository
       longitude: location["longitude"],
       internet_protocol_id: internet_protocol_id
     }
-    binding.pry
+
     Location.create!(attributes)
   end
 end

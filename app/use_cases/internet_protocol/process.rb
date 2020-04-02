@@ -7,7 +7,7 @@ class InternetProtocol::Process
     @location = IpstackAdapter.call(@internet_protocol.name)
 
     Location::Repository.create(@location, @internet_protocol.id)
-
+    
     @internet_protocol
   end
 end

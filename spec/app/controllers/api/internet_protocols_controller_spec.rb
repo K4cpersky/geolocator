@@ -32,8 +32,8 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
             .and(have_attribute(:region).with_value(location.region)
             .and(have_attribute(:city).with_value(location.city)
             .and(have_attribute(:zip).with_value(location.zip)
-            .and(have_attribute(:longitude).with_value(location.longitude)
-            .and(have_attribute(:latitude).with_value(location.latitude))))))))))
+            .and(have_attribute(:longitude).with_value(location.longitude.round(7).to_s)
+            .and(have_attribute(:latitude).with_value(location.latitude.round(7).to_s))))))))))
       }
       it { expect(response.status).to eq(200) }
     end
@@ -95,53 +95,100 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
         {
           data: {
             attributes: {
-              name: Faker::Internet.ip_v4_address
+              name: internet_protocol_name
             }
           }
         }
     end
-    let(:response_data) { JSON.parse(response.body) }
-    let(:internet_protocol_id) { location.internet_protocol_id }
+    let(:response_data) do
+      JSON.parse(response.body)
+    end
 
     context 'when internet protocol is created' do
-      before do
-        post :create, params: params, as: :json
-      end
+      let(:internet_protocol_name) { "134.201.250.155" }
 
-      it 'runs payment process' do
+      it 'runs internet protocol process' do
         ActionController::Parameters.permit_all_parameters = true
-        permitted_params = ActionController::Parameters.new(name: params[:data][:attributes][:name])
+        permitted_params = ActionController::Parameters.new(name: internet_protocol_name)
         expect(InternetProtocol::Process)
           .to receive(:call).with(permitted_params)
                             .and_call_original
 
         post_create
       end
-      # Tak samo jak w show odtąd
-      it { expect(response.status).to eq(200) }
-      it { expect(response_data['data']).to have_id(internet_protocol_id.to_s) }
-      it { expect(response_data['data']).to have_type('internet_protocols') }
-      it {
-        expect(response_data['data']).to have_attribute(:name)
-          .with_value(location.internet_protocol.name)
-      }
-      it {
+
+      let(:internet_protocol_name) { "188.121.15.4" }
+      let(:location) do
+        {
+          city: "Wrocław",
+          continent: "Europe",
+          country: "Poland",
+          ip: "188.121.15.4",
+          latitude: 51.08361053466797,
+          longitude: 17.001310348510742,
+          region: "Lower Silesia",
+          zip: "53-142"
+        }
+      end
+
+      it 'contains valid response data' do
+        post :create, params: params, as: :json
+
+        expect(response.status).to eq(200)
+        expect(response_data['data']).to have_id(InternetProtocol.first.id.to_s)
+        expect(response_data['data']).to have_type('internet_protocols')
+        expect(response_data['data'])
+          .to have_attribute(:name).with_value(internet_protocol_name)
         expect(response_data['data']).to have_relationship(:location)
-          .with_data('id' => location.id.to_s, 'type' => 'locations')
-      }
-      it {
+            .with_data('id' => Location.first.id.to_s, 'type' => 'locations')
         expect(response_data['included'])
           .to include(have_type('locations')
-            .and(have_id(location.id.to_s)
-            .and(have_attribute(:continent).with_value(location.continent)
-            .and(have_attribute(:country).with_value(location.country)
-            .and(have_attribute(:region).with_value(location.region)
-            .and(have_attribute(:city).with_value(location.city)
-            .and(have_attribute(:zip).with_value(location.zip)
-            .and(have_attribute(:longitude).with_value(location.longitude)
-            .and(have_attribute(:latitude).with_value(location.latitude))))))))))
-      }
-      # dotąd
+            .and(have_id(Location.first.id.to_s)
+            .and(have_attribute(:continent).with_value(location[:continent])
+            .and(have_attribute(:country).with_value(location[:country])
+            .and(have_attribute(:region).with_value(location[:region])
+            .and(have_attribute(:city).with_value(location[:city])
+            .and(have_attribute(:zip).with_value(location[:zip])
+            .and(have_attribute(:longitude).with_value(location[:longitude].round(7).to_s)
+            .and(have_attribute(:latitude).with_value(location[:latitude].round(7).to_s))))))))))
+      end
+    end
+
+    context 'when internet protocol is not created' do
+      context 'when internet protocol is invalid' do
+        let(:internet_protocol_name) { "123-456-123" }
+
+        it {
+          post :create, params: params, as: :json
+
+          expect(response_data['errors'][0]['detail'])
+            .to eq("Validation failed: Name is invalid")
+        }
+        it {
+          post :create, params: params, as: :json
+
+          expect(response.status).to eq(422)
+        }
+      end
+
+      context 'when internet protocol is already created' do
+        let(:internet_protocol_name) { "134.201.250.155" }
+        let!(:internet_protocol) do
+          create(:internet_protocol, name: "134.201.250.155")
+        end
+
+        it {
+          post :create, params: params, as: :json
+
+          expect(response_data['errors'][0]['detail'])
+            .to eq("Validation failed: Name has already been taken")
+        }
+        it {
+          post :create, params: params, as: :json
+
+          expect(response.status).to eq(422)
+        }
+      end
     end
   end
 
@@ -153,6 +200,10 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
     it {
       should rescue_from(ActiveRecord::RecordNotFound)
         .with(:render_not_found_error)
+    }
+    it {
+      should rescue_from(ActiveRecord::RecordInvalid)
+        .with(:render_not_valid_error)
     }
   end
 end
