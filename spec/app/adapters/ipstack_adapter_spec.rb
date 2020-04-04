@@ -12,6 +12,12 @@ RSpec.describe IpstackAdapter do
     let(:url) { "http://api.ipstack.com/#{internet_protocol}" }
     let(:fields) { 'ip,continent_name,country_name,region_name,city,zip,latitude,longitude' }
 
+    around do |example|
+      VCR.use_cassette('IpstackAdapter::Call') do
+        example.run
+      end
+    end
+
     it 'calls faraday for get request' do
       expect(Faraday)
         .to receive(:get)
@@ -50,6 +56,12 @@ RSpec.describe IpstackAdapter do
 
     context 'when internet protocol is not valid' do
       let(:internet_protocol) { '1.124.12.41.24.1' }
+
+      around do |example|
+        VCR.use_cassette('IpstackAdapter::Call_error') do
+          example.run
+        end
+      end
 
       it 'raises wrong ip error' do
         expect { subject }.to raise_exception IpstackAdapter::WrongIpError

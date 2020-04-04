@@ -1,0 +1,48 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.ipstack.com/188.121.15.4?access_key=1de96d674202e341c06139dbe054ccd3&fields=ip%2Ccontinent_name%2Ccountry_name%2Cregion_name%2Ccity%2Czip%2Clatitude%2Clongitude
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v1.0.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      date:
+      - Sat, 04 Apr 2020 13:04:57 GMT
+      content-type:
+      - application/json; Charset=UTF-8
+      transfer-encoding:
+      - chunked
+      connection:
+      - close
+      set-cookie:
+      - __cfduid=d4a2021c4e38e316fd482ae3e73808eb11586005496; expires=Mon, 04-May-20
+        13:04:56 GMT; path=/; domain=.ipstack.com; HttpOnly; SameSite=Lax
+      x-apilayer-transaction-id:
+      - 52197c6e-39b6-49a7-af0c-0288a6a522f1
+      access-control-allow-methods:
+      - GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS
+      access-control-allow-origin:
+      - "*"
+      x-request-time:
+      - '0.021'
+      cf-cache-status:
+      - DYNAMIC
+      server:
+      - cloudflare
+      cf-ray:
+      - 57eb3cf3bcabf2c0-WAW
+    body:
+      encoding: ASCII-8BIT
+      string: '{"ip":"188.121.15.4","continent_name":"Europe","country_name":"Poland","region_name":"Lower
+        Silesia","city":"Wroc\u0142aw","zip":"53-142","latitude":51.08361053466797,"longitude":17.001310348510742}'
+    http_version: null
+  recorded_at: Sat, 04 Apr 2020 13:04:57 GMT
+recorded_with: VCR 5.1.0

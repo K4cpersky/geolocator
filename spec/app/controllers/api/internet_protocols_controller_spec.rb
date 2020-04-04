@@ -148,6 +148,12 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
     context 'when internet protocol is created' do
       let(:internet_protocol_name) { '134.201.250.155' }
 
+      around do |example|
+        VCR.use_cassette('IpstackAdapter::Call_controller_success') do
+          example.run
+        end
+      end
+
       it 'runs internet protocol process' do
         ActionController::Parameters.permit_all_parameters = true
         permitted_params = ActionController::Parameters.new(name: internet_protocol_name)

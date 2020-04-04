@@ -1,0 +1,47 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://api.ipstack.com/1.124.12.41.24.1?access_key=1de96d674202e341c06139dbe054ccd3&fields=ip%2Ccontinent_name%2Ccountry_name%2Cregion_name%2Ccity%2Czip%2Clatitude%2Clongitude
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Faraday v1.0.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      date:
+      - Sat, 04 Apr 2020 12:51:05 GMT
+      content-type:
+      - application/json; Charset=UTF-8
+      transfer-encoding:
+      - chunked
+      connection:
+      - close
+      set-cookie:
+      - __cfduid=da09d66ebb2f2632887d527132392f5381586004665; expires=Mon, 04-May-20
+        12:51:05 GMT; path=/; domain=.ipstack.com; HttpOnly; SameSite=Lax
+      x-apilayer-transaction-id:
+      - d0b17e3a-a3fb-4c09-aee4-3e79c0bd9bdc
+      access-control-allow-methods:
+      - GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS
+      access-control-allow-origin:
+      - "*"
+      x-request-time:
+      - '0.074'
+      cf-cache-status:
+      - DYNAMIC
+      server:
+      - cloudflare
+      cf-ray:
+      - 57eb28a4db51cc8b-WAW
+    body:
+      encoding: ASCII-8BIT
+      string: '{"ip":"1.124.12.41.24.1","continent_name":null,"country_name":null,"region_name":null,"city":null,"zip":null,"latitude":null,"longitude":null}'
+    http_version: null
+  recorded_at: Sat, 04 Apr 2020 12:51:05 GMT
+recorded_with: VCR 5.1.0

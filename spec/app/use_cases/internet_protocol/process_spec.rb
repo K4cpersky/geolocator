@@ -24,6 +24,12 @@ RSpec.describe InternetProtocol::Process do
       }
     end
 
+    around do |example|
+      VCR.use_cassette('IpstackAdapter::Call_process') do
+        example.run
+      end
+    end
+
     it 'calls internet protocol repository' do
       expect(InternetProtocol::Repository)
         .to receive(:create)
@@ -37,15 +43,6 @@ RSpec.describe InternetProtocol::Process do
       expect(IpstackAdapter)
         .to receive(:call)
         .with(name)
-        .and_call_original
-
-      call
-    end
-
-    it 'calls location repository' do
-      expect(Location::Repository)
-        .to receive(:create)
-        .with(location_attributes, InternetProtocol.first.id)
         .and_call_original
 
       call
