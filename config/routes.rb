@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   defaults format: :json do
     namespace :api do
-      resources :internet_protocols, only: %i[show create destroy]
+      resources :internet_protocols, only: %i[show create destroy index]
     end
   end
 end

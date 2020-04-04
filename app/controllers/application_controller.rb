@@ -11,6 +11,10 @@ class ApplicationController < ActionController::API
     render_error(error.message, status: 422)
   end
 
+  def render_wrong_ip(error)
+    render_error(error.message, status: 204)
+  end
+
   def render_error(message, status:)
     render jsonapi_errors: { detail: message }, status: status
   end

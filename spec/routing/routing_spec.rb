@@ -26,4 +26,11 @@ RSpec.describe 'Routing', type: :routing do
       action: :create
     )
   }
+  it {
+    is_expected.to route(:get, '/api/internet_protocols').to(
+      format: :json,
+      controller: 'api/internet_protocols',
+      action: :index
+    )
+  }
 end

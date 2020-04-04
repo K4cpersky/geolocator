@@ -8,10 +8,10 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
     before { get :show, params: { id: internet_protocol_id } }
 
     let!(:location) { create(:location) }
+    let(:response_data) { JSON.parse(response.body) }
 
     context 'when internet_protocol is found' do
       let(:internet_protocol_id) { location.internet_protocol_id }
-      let(:response_data) { JSON.parse(response.body) }
 
       it { expect(response_data['data']).to have_id(internet_protocol_id.to_s) }
       it { expect(response_data['data']).to have_type('internet_protocols') }
@@ -40,13 +40,54 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
 
     context 'when internet_protocol is not found' do
       let(:internet_protocol_id) { 12_345 }
-      let(:response_data) { JSON.parse(response.body) }
 
       it {
         expect(response_data['errors'][0]['detail'])
           .to eq("Couldn't find InternetProtocol with 'id'=#{internet_protocol_id}")
       }
       it { expect(response.status).to eq(404) }
+    end
+  end
+
+  describe 'GET #index' do
+    let(:response_data) { JSON.parse(response.body) }
+
+    context 'when internet protocols exist' do
+      let!(:locations) { create_list(:location, 10) }
+
+      it 'returns internet_protocols' do
+        get :index
+
+        expect(response_data['data'].length).to eq 10
+      end
+      it 'has status 200' do
+        get :index
+
+        expect(response.status).to eq(200)
+      end
+      it 'contains valid response data' do
+        get :index
+
+        expect(response_data['data'][0]).to have_id(locations.first.internet_protocol_id.to_s)
+        expect(response_data['data'][0]).to have_type('internet_protocols')
+        expect(response_data['data'][0]).to have_attribute(:name)
+          .with_value(locations.first.internet_protocol.name)
+        expect(response_data['data'][0]).to have_relationship(:location)
+          .with_data('id' => locations.first.id.to_s, 'type' => 'locations')
+      end
+    end
+
+    context 'when there is no internet protocol' do
+      it 'does not return any internet_protocol' do
+        get :index
+
+        expect(response_data['data'].length).to eq 0
+      end
+      it 'has status 200' do
+        get :index
+
+        expect(response.status).to eq(200)
+      end
     end
   end
 
@@ -204,6 +245,10 @@ RSpec.describe Api::InternetProtocolsController, type: :controller do
     it {
       should rescue_from(ActiveRecord::RecordInvalid)
         .with(:render_not_valid_error)
+    }
+    it {
+      should rescue_from(IpstackAdapter::WrongIpError)
+        .with(:render_wrong_ip)
     }
   end
 end
